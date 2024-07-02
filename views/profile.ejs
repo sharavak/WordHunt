@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon"
+        href="https://res.cloudinary.com/dvc8kivbh/image/upload/v1719592169/ezmm5cq6eehbx0go3sea.png"
+        type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Profile - Word Hunt</title>
+</head>
+
+<body>
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #094653, #17596d, #296b89, #417ea5, #5c90c2, #5f93c7, #6397cc, #669ad1, #4f8fc0, #3985ae, #24799b, #0b6e89);
+        }
+    </style>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Word Hunt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" aria-current="page" href="/game">Play</a>
+                    <a class="nav-link" href="/ranking">Ranking</a>
+                    <a class="nav-link" href="/profile/<%= user_id %>">Profile</a>
+                    <% if(isAuth) { %>
+                        <a class="nav-link" href="/logout">Logout</a>
+                        <% } %>
+                            <% if(!isAuth) { %>
+                                <a class="nav-link" href="/auth/google">Sign in</a>
+                                <a class="nav-link" href="/auth/google">Sign up</a>
+                                <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <% if(success && success.length) { %>
+        <div class="alert alert-success alert-dismissible w-100" role="alert" style="position: absolute;top: 0;">
+            <span>
+                <%= success %>
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+            <div class="container d-flex flex-column justify-content-center" style="height: 88vh;">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 col-10 p-0 px-3 py-3 mb-3"
+                                style="border-radius: 3%; background-color: rgb(26 92 113);box-shadow: 3px 3px 6px 1px #060606;">
+                                <div class="d-flex flex-column align-items-center">
+                                    <img class="photo" src="<%= stats.user.profilePic %>" alt="" srcset=""
+                                        style="border-radius: 50%; object-fit: cover; width: 100px; height: 100px;">
+                                    <p class="text-light">
+                                        <%= stats.user.name %>
+                                    </p>
+                                    <p class="text-light mb-3">
+                                        <span>Location:</span>
+                                        <%= stats.user.location %>
+                                    </p>
+                                    <p class="text-light mb-3">
+                                        <span>Joined:</span>
+                                        <%= stats.user.joined %>
+                                    </p>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <% if(isUser && isAuth) { %>
+                                            <p class="text-light">
+                                                <%= stats.user.email %>
+                                            </p>
+                                            <% } %>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <% if(isUser && isAuth) { %>
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                                Edit
+                                            </button>
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 ps-md-4">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 col-10 px-3 pb-3"
+                                style="border-radius: 3%;background-color: rgb(26 92 113);box-shadow: 3px 3px 6px 1px #060606;">
+                                <h5 class="d-flex align-items-center mb-3 fw-bold py-3"><i class="text-info me-2">Game
+                                        Stats</i></h5>
+                                <div class="mb-3">
+                                    <strong style="color: #81ddc9;">No of games played: </strong><i
+                                        style="color: white;">
+                                        <%= stats.gamesPlayed %>
+                                    </i>
+                                </div>
+                                <strong style="color: #81ddc9;">Max Marks</strong>
+                                <div class="progress mb-3" style="height: 12px">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar"
+                                        style="width:<%= stats.maxMarks %>%; background-color: #011777;"
+                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <%= stats.maxMarks %>
+                                    </div>
+                                </div>
+                                <div>
+                                    <strong style="color: #81ddc9;">Max Rank: </strong><i style="color: white;">
+                                        <%= stats.maxRank %>
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Profile Edit</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form class="modal-body" method="post" action="/profile/<%=stats.user._id %>"
+                            enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <img class="photo" src="<%= stats.user.profilePic %>" alt="" srcset=""
+                                    style="border-radius: 50%; object-fit: cover; width: 100px; height: 100px;">
+                                <label for="profilePic" class="form-label">Profile Pic</label>
+                                <input type="file" name="profilePic" id="profilePic" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" value="<%= stats.user.name %>" class="form-control" id="name"
+                                    aria-describedby="emailHelp" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location"
+                                    value="<%= stats.user.location %>">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon"
+        href="https://res.cloudinary.com/dvc8kivbh/image/upload/v1719592169/ezmm5cq6eehbx0go3sea.png"
+        type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="game.css">
+    <title>Word Hunt</title>
+</head>
+
+<body>
+
+    <div class="ani hideAni">
+        <img src="https://cdn-icons-png.flaticon.com/128/3784/3784476.png" alt="">
+        <img src="https://cdn-icons-png.flaticon.com/128/5503/5503412.png" alt="">
+        <img src="https://cdn-icons-png.flaticon.com/128/8615/8615259.png" alt="">
+        <img src="https://cdn-icons-png.flaticon.com/128/4677/4677085.png" alt="">
+        <img src="https://cdn-icons-png.flaticon.com/128/657/657267.png " alt="">
+        <img src="https://cdn-icons-png.flaticon.com/128/3935/3935109.png" alt="">
+    </div>
+    <div class="al" style="position: relative; display: flex;justify-content: center;">
+        <div id="myAlert" class="hideAle">
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Word Hunt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" aria-current="page" href="/game">Play</a>
+                    <a class="nav-link" href="/ranking">Ranking</a>
+                    <a class="nav-link" href="/profile/<%= user_id %>">Profile</a>
+                    <a class="nav-link" href="/logout">Logout</a>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <% if(success && success.length) { %>
+        <div class="alert alert-success alert-dismissible w-100" role="alert" style="position: absolute;top: 0;">
+            <span>
+                <%= success %>
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+
+            <button type="button" class="btn btn-info m-auto mt-1 d-flex justify-content-center" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                How to play?
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog d-flex m-auto">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">How to play?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul>
+                                <li>Find the words which include the letter in the middle cell</li>
+                                <li>Find atleast 1 word to get in the ranking board</li>
+                                <li>Maximum length of the word is 8</li>
+                                <li>Minimum length of the word is 4</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-cont">
+                <span class="input-text"></span>
+            </div>
+            <div class="points">
+                <div class="progress" role="progressbar" aria-label="Warning example" aria-valuenow="75"
+                    aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                        style="background-color:rgb(1 49 97);">
+                        0</div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="hex-cont">
+
+                    <% for(let i=0;i<7;i++) { %>
+                        <div class="hex">
+                            <%= data[i] %>
+                        </div>
+                        <% } %>
+                </div>
+                <div class="wordsCont">
+                    <div class="title">You have found <%= 0 %> words</div>
+                    <div class="words">
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <div></div>
+                <button class="delete btn btn-danger" style="background-color: #89000e;">Delete</button>
+                <button class="btn btn-info pt-0 pb-0 refresh"><img
+                        src="https://cdn-icons-png.flaticon.com/32/3161/3161390.png" alt=""></button>
+                <button class="enter btn btn-success">Enter</button>
+            </div>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
+            <script src="index.js"></script>
+
+</body>
+
+</html>
