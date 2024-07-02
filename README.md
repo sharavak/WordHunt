@@ -1,7 +1,7 @@
 
 # Word Hunt
 
-A Full stack application, where can find the words to improve the vocobulary skills
+A Full stack application, where we can find the words to improve the vocobulary skills
 ## Features
 
 - New game daily
