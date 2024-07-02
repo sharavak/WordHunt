@@ -1,11 +1,13 @@
 
-# Word Hunt
+## Word Hunt
 
 A Full stack application, where we can find the words to improve the vocobulary skills
 ## Features
 
-- New game daily
+- Word game with daily updation.
 - Ranking updates every 24 hours
+
+
 ## Tech Stack
 #### Frontend: HTML,CSS,Javascript
 
