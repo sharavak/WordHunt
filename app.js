@@ -14,6 +14,7 @@ const profile = require('./routes/profile')
 const { convertTime } = require("./utils/dateTime");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./models/user");
+const UserStats = require("./models/stats");
 const cron = require('./schedule');
 
 if (process.env.Node_ENV !== 'production') {
@@ -22,7 +23,7 @@ if (process.env.Node_ENV !== 'production') {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(cors());
+app.use(cors({ origin: 'https://wordhunt.azurewebsites.net' }));
 app.use(flash());
 
 const dbURL = process.env.DBURL || "mongodb://127.0.0.1:27017/wordDB"
@@ -74,7 +75,10 @@ passport.use(
         async function (request, accessToken, refreshToken, profile, done) {
             const exist = await User.findOne({ email: profile["emails"][0].value });
             if (!exist) {
-                await User.create({ email: profile["emails"][0].value, name: profile._json.name, profilePic: profile._json.picture, joined: convertTime() });
+                const user = await User.create({ email: profile["emails"][0].value, name: profile._json.name, profilePic: profile._json.picture, joined: convertTime() });
+                const userStats = new UserStats({ user: user._id });
+                await userStats.save();
+                await user.save();
             }
             const user = await User.findOne({ email: profile["emails"][0].value });
             return done(null, user);

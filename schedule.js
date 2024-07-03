@@ -25,7 +25,7 @@ const upd = async () => {
         userStats.gamesPlayed++;
         await userStats.save()
     })
-    rankUpd.sort((a, b) => (a.marks == b.marks) ? a.user.name.localeCompare(b.user.name.localeCompare) : b.marks - a.marks);
+    rankUpd.sort((a, b) => (a.marks === b.marks) ? a.user.name.localeCompare(b.user.name.localeCompare) : b.marks - a.marks);
     await Data.findOneAndUpdate({ _id: datas.id }, { rank: rankUpd }, { overwrite: true });
 
 }
