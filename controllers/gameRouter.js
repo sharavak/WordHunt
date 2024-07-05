@@ -65,7 +65,11 @@ module.exports.editProfile = async (req, res) => {
 
 module.exports.renderLeaderBoard = async (req, res) => {
     const stats = await UserStats.find().populate('user');
+    console.log(cache.get('stats'));
+    if (cache.get('stats') !== undefined)
+        return res.render('leaderboard', { stats: cache.get('stats') })
     stats.sort((a, b) => a.rank - b.rank)
+    cache.set('stats', stats);
     return res.render('leaderboard', { stats: stats })
 
 }

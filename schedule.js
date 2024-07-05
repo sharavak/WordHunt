@@ -40,6 +40,7 @@ cron.schedule('10 0 * * *', async () => {
     timezone: 'Asia/Kolkata'
 })
 const updLeader = async () => {
+
     let marks = new Set();
     stats.forEach(stat => marks.add(stat.totalScore));
     marks = Array.from(marks);
@@ -52,9 +53,11 @@ const updLeader = async () => {
         stat.rank = d[stat.totalScore];
         stat.save();
     })
+
 }
 cron.schedule('18 1 * * *', async () => {
     await updLeader();
+    cache.delete('stats');
 }, {
     timezone: 'Asia/Kolkata'
 })
