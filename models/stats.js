@@ -16,6 +16,14 @@ const userStats = mongoose.Schema({
         type: Number,
         default: 0
     },
+    totalScore: {
+        type: Number,
+        default: 0
+    },
+    rank: {
+        type: Number,
+        default: 0
+    }
 })
 
 module.exports = mongoose.model('UserStats', userStats);

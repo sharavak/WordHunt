@@ -41,7 +41,7 @@ module.exports.renderProfile = async (req, res) => {
     let isAuth = req.isAuthenticated();
     const stats = await UserStats.findOne({ user: req.params.id }).populate("user")
     if (req.user && req.user._id === req.params.id) isUser = true;
-    res.render('profile', { stats: stats, isUser: isUser, isAuth: isAuth, user_id: stats.user._id });
+    res.render('profile', { stats: stats, isUser: isUser, isAuth: isAuth, user_id: req.user ? req.user._id : stats.user._id });
 }
 module.exports.editProfile = async (req, res) => {
     const user = await User.findOne({ _id: req.user._id })
@@ -61,4 +61,11 @@ module.exports.editProfile = async (req, res) => {
     await user.save();
     req.flash("success", "Profile Updated Successfully!!!")
     res.redirect(`/profile/${req.params.id}`);
+}
+
+module.exports.renderLeaderBoard = async (req, res) => {
+    const stats = await UserStats.find().populate('user');
+    stats.sort((a, b) => a.rank - b.rank)
+    return res.render('leaderboard', { stats: stats })
+
 }

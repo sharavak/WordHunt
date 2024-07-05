@@ -1,5 +1,4 @@
 const Data = require('./models/data');
-const User = require('./models/user');
 const UserStats = require("./models/stats");
 const cron = require('node-cron');
 const cache = require('./cache');
@@ -37,6 +36,25 @@ cron.schedule('10 0 * * *', async () => {
     cache.delete('newDay');
     cache.delete('rank');
     console.log("CRON JOB!!!!");
+}, {
+    timezone: 'Asia/Kolkata'
+})
+const updLeader = async () => {
+    let marks = new Set();
+    stats.forEach(stat => marks.add(stat.totalScore));
+    marks = Array.from(marks);
+    marks.sort((a, b) => b - a);
+    let d = {}, ctr = 0;
+    for (let mark of marks)
+        d[mark] = ++ctr;
+    console.log(marks, d);
+    stats.forEach(async (stat) => {
+        stat.rank = d[stat.totalScore];
+        stat.save();
+    })
+}
+cron.schedule('18 1 * * *', async () => {
+    await updLeader();
 }, {
     timezone: 'Asia/Kolkata'
 })
