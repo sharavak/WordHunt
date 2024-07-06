@@ -64,12 +64,17 @@ module.exports.editProfile = async (req, res) => {
 }
 
 module.exports.renderLeaderBoard = async (req, res) => {
+    const isUser = req.user ? req.user : false;
+    const isAuth = req.isAuthenticated();
     const stats = await UserStats.find().populate('user');
-    console.log(cache.get('stats'));
     if (cache.get('stats') !== undefined)
-        return res.render('leaderboard', { stats: cache.get('stats') })
-    stats.sort((a, b) => a.rank - b.rank)
+        return res.render('leaderboard', { stats: cache.get('stats'), isUser: isUser, isAuth: isAuth })
+    stats.sort((a, b) => {
+        if (a.rank === b.rank)
+            return a.user.name.localeCompare(b.user.name)
+        return a.rank - b.rank
+    })
     cache.set('stats', stats);
-    return res.render('leaderboard', { stats: stats })
+    return res.render('leaderboard', { stats: stats, isUser: isUser, isAuth: isAuth })
 
 }

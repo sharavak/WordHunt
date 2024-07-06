@@ -67,10 +67,13 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link" aria-current="page" href="/game">Play</a>
-                    <a class="nav-link" href="/ranking">Ranking</a>
-                    <a class="nav-link" href="leaderboard">Leaderboard</a>
-                    <a class="nav-link" href="/auth/google">Sign in</a>
-                    <a class="nav-link" href="/auth/google">Sign up</a>
+                    <% if(isAuth) { %>
+                        <a href="/profile/<%= isUser._id %>" class="nav-link">Profile</a>
+                        <% } %>
+                            <a class="nav-link" href="/ranking">Ranking</a>
+                            <a class="nav-link" href="leaderboard">Leaderboard</a>
+                            <a class="nav-link" href="/auth/google">Sign in</a>
+                            <a class="nav-link" href="/auth/google">Sign up</a>
                 </div>
             </div>
         </div>

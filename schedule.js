@@ -22,6 +22,7 @@ const upd = async () => {
             userStats.maxRank = Math.min(userStats.maxRank, d[data.marks])
         userStats.maxMarks = Math.max(userStats.maxMarks, data.marks)
         userStats.gamesPlayed++;
+        userStats.totalScore += data.marks;
         await userStats.save()
     })
     rankUpd.sort((a, b) => (a.marks === b.marks) ? a.user.name.localeCompare(b.user.name.localeCompare) : b.marks - a.marks);
@@ -40,7 +41,7 @@ cron.schedule('10 0 * * *', async () => {
     timezone: 'Asia/Kolkata'
 })
 const updLeader = async () => {
-
+    const stats = await UserStats.find();
     let marks = new Set();
     stats.forEach(stat => marks.add(stat.totalScore));
     marks = Array.from(marks);
@@ -55,7 +56,7 @@ const updLeader = async () => {
     })
 
 }
-cron.schedule('18 1 * * *', async () => {
+cron.schedule('30 0 * * *', async () => {
     await updLeader();
     cache.delete('stats');
 }, {
