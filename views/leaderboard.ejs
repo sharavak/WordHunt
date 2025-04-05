@@ -72,8 +72,10 @@
                         <% } %>
                             <a class="nav-link" href="/ranking">Ranking</a>
                             <a class="nav-link" href="leaderboard">Leaderboard</a>
-                            <a class="nav-link" href="/auth/google">Sign in</a>
-                            <a class="nav-link" href="/auth/google">Sign up</a>
+                            <% if(!isAuth) { %>
+                                <a class="nav-link" href="/auth/google">Sign in</a>
+                                <a class="nav-link" href="/auth/google">Sign up</a>
+                            <% } %>
                 </div>
             </div>
         </div>

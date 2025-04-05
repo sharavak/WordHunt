@@ -19,6 +19,8 @@ module.exports.game = async (req, res) => {
     if (cache.get('newDay') !== undefined)
         return res.render('game', { data: cache.get('newDay'), user_id: req.user._id })
     const newDay = await Data.findOne({ date: date }, { letters: 1 });
+    if(!newDay)
+        return res.render("game", { data: [], user_id: req.user._id });
     cache.set('newDay', newDay.letters);
     return res.render("game", { data: newDay.letters, user_id: req.user._id });
 }
@@ -28,7 +30,8 @@ module.exports.ranking = async (req, res) => {
         if (cache.get('rank') !== undefined)
             return res.render('ranking', { data: cache.get('rank'), date: yest, user_id: req.user._id });
         let datas = await Data.findOne({ date: getYesterdayDate() }, { rank: 1 }).populate({ path: 'rank', populate: { path: 'user' } })
-
+        if(!datas)
+            return res.render('ranking', { data: [], date: yest, user_id: req.user._id });
         cache.set('rank', datas.rank);
         return res.render('ranking', { data: datas.rank, date: yest, user_id: req.user._id });
     } catch {
